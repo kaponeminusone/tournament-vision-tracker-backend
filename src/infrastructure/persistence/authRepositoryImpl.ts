@@ -14,8 +14,14 @@ export class AuthRepositoryImpl implements AuthRepository{
         private readonly authDataSource: AuthDataSource,
     ){}
 
-    register(registerUserDTO: RegisterUserDTO): Promise<UserEntity> {
-        return this.authDataSource.register(registerUserDTO);
+    async register(registerUserDTO: RegisterUserDTO): Promise<UserEntity> {
+        try {
+            return await this.authDataSource.register(registerUserDTO);
+
+        } catch (error: any) {
+            throw new Error(error);
+        }
+        
     }
 
 }

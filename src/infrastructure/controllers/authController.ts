@@ -14,12 +14,12 @@ export class AuthController{
 
         const [ error, registerUserDTO ]= RegisterUserDTO.create(req.body);
 
-        if( error ) return res.status(400).json({error});
+        if( error ) return res.status(400).json({ error });
        
         this.authService.register(registerUserDTO!)
         .then( user => res.json(user))
-        .catch( error => res.send(error)) //TODO manejar el error de mejor manera
-
+        .catch( ( error: any ) => res.status(400).send({ message: error.message })) 
+        //TODO manejar el error de mejor manera
     }
 
     loginUser = (req: Request, res: Response) => {

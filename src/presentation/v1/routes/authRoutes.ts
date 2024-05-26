@@ -13,7 +13,6 @@ export class AuthRouter{
         // Aquí se inyectan las dependencias
         const database = new DatabaseAuthDataSource();
         const authRepository = new AuthRepositoryImpl(database);
-
         const controller = new AuthController(authRepository);
 
         routes

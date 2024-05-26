@@ -46,4 +46,14 @@ export class DatabaseAuthDataSource implements AuthDataSource{
         }
     }
 
+    //TODO por mientras luego eliminar
+    async getUsers(): Promise<UserEntity[]>{
+        try {
+            const users = await prisma.user.findMany();
+            return UserMapper.userEntityFromArray(users);
+        } catch (error: any) {
+            throw new Error(`Failed to get Users ${error.message}`)
+        }
+    }
+
 }

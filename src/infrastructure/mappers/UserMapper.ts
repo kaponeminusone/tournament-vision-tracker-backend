@@ -22,4 +22,8 @@ export class UserMapper{
         )
 
     }
+
+    static userEntityFromArray(objects: {[key: string]: any}[]){
+        return objects.map(object => UserMapper.userEntityFromObject(object));
+    }
 }

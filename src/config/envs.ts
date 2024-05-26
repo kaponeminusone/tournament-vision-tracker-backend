@@ -13,4 +13,6 @@ export const envs = {
     DB_NAME: envVar.get('DB_NAME').required().asString(),
     DB_PORT: envVar.get('DB_PORT').required().asString(),
 
+    JWT_SECRET: envVar.get('DB_PORT').required().asString(),
+
 };

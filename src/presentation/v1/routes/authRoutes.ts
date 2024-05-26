@@ -2,10 +2,10 @@ import { Router } from 'express'
 import { AuthController } from '../../../infrastructure/controllers/authController';
 import { AuthRepositoryImpl } from '../../../infrastructure/persistence/authRepositoryImpl';
 import { DatabaseAuthDataSource } from '../../../infrastructure/datasources/implementations/databaseAuthDataSource';
+import { AuthMiddleware } from '../../../infrastructure/middlewares/authMiddleware';
 
 export class AuthRouter{
 
-    
     get routes(): Router {
         
         const routes: Router = Router();
@@ -16,7 +16,8 @@ export class AuthRouter{
         const controller = new AuthController(authRepository);
 
         routes
-            .post('/login', controller.loginUser)
+        //TODO: Probando el token para acceder al login, no tiene sentido borrarlo
+            .post('/login',[ AuthMiddleware.validateJWT ], controller.loginUser)
             .post('/register', controller.registerUser);
 
         return routes;

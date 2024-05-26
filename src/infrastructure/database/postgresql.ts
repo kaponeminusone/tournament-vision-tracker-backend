@@ -1,5 +1,5 @@
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 
 export class PostgresSQLDatabase{
     
@@ -10,3 +10,4 @@ export class PostgresSQLDatabase{
 }
 
 export const prisma: PrismaClient = new PrismaClient();
+export const roleEnum = Role;

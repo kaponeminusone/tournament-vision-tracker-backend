@@ -10,9 +10,7 @@ import { PostgresSQLDatabase } from "./infrastructure/database/postgresql";
 })()
 
 async function main(){
-    //TODO: await base de datos
-
-   
+  
     PostgresSQLDatabase.connect()
     .then(() => console.log("Database connected"))
     .catch((err) => { throw new Error("Database Prisma is not connected") });

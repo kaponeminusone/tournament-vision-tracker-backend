@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import { AuthController } from '../../../infrastructure/controllers/authController';
 import { AuthRepositoryImpl } from '../../../infrastructure/persistence/authRepositoryImpl';
-import { DatabaseAuthDataSource } from '../../../infrastructure/datasources/implementations/databaseAuthDataSource';
+import { DatabaseAuthDataSource } from '../../../infrastructure/datasources/implementations/postgresql/databaseAuthDataSource';
 import { AuthMiddleware } from '../../../infrastructure/middlewares/authMiddleware';
+import { AuthService } from '../../../application/services/authService';
 
 export class AuthRouter{
 
@@ -13,13 +14,14 @@ export class AuthRouter{
         // Aquí se inyectan las dependencias
         const database = new DatabaseAuthDataSource();
         const authRepository = new AuthRepositoryImpl(database);
-        const controller = new AuthController(authRepository);
+        const authService = new AuthService(authRepository);
+        const controller = new AuthController(authService);
 
         routes
-        //TODO: Probando el token para acceder al login, no tiene sentido borrarlo
-            .post('/login',[ AuthMiddleware.validateJWT ], controller.loginUser)
+            .get('/',[ AuthMiddleware.validateJWT ], controller.loginUser)
+            .post('/login', controller.loginUser)
             .post('/register', controller.registerUser);
-
+    
         return routes;
     }
     

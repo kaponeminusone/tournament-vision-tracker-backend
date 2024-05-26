@@ -1,5 +1,3 @@
-//Crear migraciones con npx prisma migrate dev
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,82 +8,90 @@ datasource db {
 }
 
 model MatchStatistic {
-  id             Int       @id @default(autoincrement())
-  matchId        Int?
-  playerId       Int?
-  goals          Int?
-  assists        Int?
-  yellowCards    Int?
-  redCards       Int?
-  minutesPlayed  Int?
-  match          Match?    @relation(fields: [matchId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  player         Player?   @relation(fields: [playerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id            Int     @id @default(autoincrement())
+  matchId       Int?
+  playerId      Int?
+  goals         Int?
+  assists       Int?
+  yellowCards   Int?
+  redCards      Int?
+  minutesPlayed Int?
+  match         Match?  @relation(fields: [matchId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  player        Player? @relation(fields: [playerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Match {
-  id                 Int               @id @default(autoincrement())
-  tournamentId       Int?
-  homeTeamId         Int?
-  awayTeamId         Int?
-  date               DateTime          @db.Timestamp(6)
-  duration           Int?
-  result             String?           @db.VarChar(50)
-  matchStatistics    MatchStatistic[]
-  homeTeam           Team?             @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  awayTeam           Team?             @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  tournament         Tournament?       @relation(fields: [tournamentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id              Int              @id @default(autoincrement())
+  tournamentId    Int?
+  homeTeamId      Int?
+  awayTeamId      Int?
+  date            DateTime         @db.Timestamp(6)
+  duration        Int?
+  result          String?          @db.VarChar(50)
+  matchStatistics MatchStatistic[]
+  homeTeam        Team?            @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  awayTeam        Team?            @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tournament      Tournament?      @relation(fields: [tournamentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Player {
-  id                    Int                     @id @default(autoincrement())
-  name                  String                  @db.VarChar(100)
-  teamId                Int?
-  matchStatistics       MatchStatistic[]
-  team                  Team?                   @relation(fields: [teamId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  tournamentStatistics  TournamentStatistic[]
+  id                   Int                   @id @default(autoincrement())
+  userId               Int                   @unique
+  matchStatistics      MatchStatistic[]
+  user                 User                  @relation(fields: [userId], references: [id])
+  tournamentStatistics TournamentStatistic[]
+  team                 Team?                 @relation(fields: [teamId], references: [id])
+  teamId               Int? // Campo de referencia al equipo al que pertenece el jugador
 }
 
 model Team {
-  id              Int       @id @default(autoincrement())
-  name            String    @db.VarChar(100)
-  coachId         Int?
-  homeMatches     Match[]   @relation("HomeTeam")
-  awayMatches     Match[]   @relation("AwayTeam")
-  players         Player[]
-  coach           User?     @relation(fields: [coachId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(100)
+  coachId     Int?
+  homeMatches Match[]  @relation("HomeTeam")
+  awayMatches Match[]  @relation("AwayTeam")
+  players     Player[] // Relación Player añadida
+  coach       User?    @relation(fields: [coachId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model TournamentStatistic {
-  id              Int         @id @default(autoincrement())
-  tournamentId    Int?
-  playerId        Int?
-  goals           Int?
-  assists         Int?
-  yellowCards     Int?
-  redCards        Int?
-  player          Player?     @relation(fields: [playerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  tournament      Tournament? @relation(fields: [tournamentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           Int         @id @default(autoincrement())
+  tournamentId Int?
+  playerId     Int?
+  goals        Int?
+  assists      Int?
+  yellowCards  Int?
+  redCards     Int?
+  player       Player?     @relation(fields: [playerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tournament   Tournament? @relation(fields: [tournamentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Tournament {
-  id                    Int                     @id @default(autoincrement())
-  name                  String                  @db.VarChar(100)
-  organizerId           Int?
-  startDate             DateTime                @db.Date
-  endDate               DateTime?               @db.Date
-  matches               Match[]
-  tournamentStatistics  TournamentStatistic[]
-  organizer             User?                   @relation(fields: [organizerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                   Int                   @id @default(autoincrement())
+  name                 String                @db.VarChar(100)
+  organizerId          Int?
+  startDate            DateTime              @db.Date
+  endDate              DateTime?             @db.Date
+  matches              Match[]
+  tournamentStatistics TournamentStatistic[]
+  organizer            User?                 @relation(fields: [organizerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-// TODO: implements ENUM for role y que sea default user
+enum Role {
+  ORGANIZER
+  COACH
+  PLAYER
+}
 
 model User {
-  id          Int        @id @default(autoincrement())
-  name        String     @db.VarChar(100)
-  email       String     @unique @db.VarChar(100)
-  password    String     @db.VarChar(100)
-  role        String     @db.VarChar(50)
+  id          Int          @id @default(autoincrement())
+  name        String       @db.VarChar(100)
+  email       String       @unique @db.VarChar(100)
+  password    String       @db.VarChar(100)
+  role        Role
+  birthDate   String       @db.VarChar(10)
+  dni         String       @unique @db.VarChar(20) // Se ha añadido la unicidad del DNI
   teams       Team[]
   tournaments Tournament[]
+  Player      Player?
 }

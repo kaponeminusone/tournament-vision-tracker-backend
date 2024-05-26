@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { AuthRouter } from './v1/routes/authRoutes';
+import { ProofRouter } from './v1/routes/ProofRoutes';
 
 export class AppRoutes {
 
@@ -10,6 +11,7 @@ export class AppRoutes {
 
         const router = Router();
         router.use('/api/v1/auth',new AuthRouter().routes);
+        router.use('/api/v1/proof',new ProofRouter().routes);
 
         return router;
     }

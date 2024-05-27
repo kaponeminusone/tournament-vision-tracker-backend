@@ -29,8 +29,8 @@ export class JwtUtil{
 
                 resolve(decoded);
             })
-
+            
         })
-
+        
     }
 }

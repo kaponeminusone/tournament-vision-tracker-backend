@@ -14,7 +14,8 @@ export class ProofRouter{
         routes
             .post('/',[AuthMiddleware.validateJWT], controller.proofPOST)
             .get('/', controller.proofGET)
-
+            
+            //TODO middleware, para validar el rol de coach
             .get('/users',[AuthMiddleware.validateJWT], controller.getUsers);
 
         return routes;

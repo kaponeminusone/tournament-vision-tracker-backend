@@ -38,9 +38,9 @@ model Player {
   id                   Int                   @id @default(autoincrement())
   userId               Int                   @unique
   matchStatistics      MatchStatistic[]
-  user                 User                  @relation(fields: [userId], references: [id])
+  user                 User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   tournamentStatistics TournamentStatistic[]
-  team                 Team?                 @relation(fields: [teamId], references: [id])
+  team                 Team?                 @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId               Int? // Campo de referencia al equipo al que pertenece el jugador
 }
 
@@ -51,7 +51,7 @@ model Team {
   homeMatches Match[]  @relation("HomeTeam")
   awayMatches Match[]  @relation("AwayTeam")
   players     Player[] // Relación Player añadida
-  coach       User?    @relation(fields: [coachId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  coach       User?    @relation(fields: [coachId], references: [id], onDelete: Cascade)
 }
 
 model TournamentStatistic {

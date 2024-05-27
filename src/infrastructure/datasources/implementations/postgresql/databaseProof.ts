@@ -2,7 +2,7 @@
 import { UserEntity } from "../../../../domain/entities/userEntity";
 import { prisma, roleEnum } from "../../../database/postgresql";
 import { Role } from "@prisma/client";
-import { UserMapper } from "../../../mappers/UserMapper";
+import { UserMapper } from "../../../mappers/userMapper";
 
 interface CreateTeamDTO {
     name: string;

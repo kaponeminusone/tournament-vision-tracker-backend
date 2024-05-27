@@ -1,10 +1,10 @@
 import { UserEntity } from "../../../../domain/entities/userEntity";
 import { AuthDataSource } from "../../authDataSource";
-import { RegisterUserDTO } from "../../../dtos/registerUserDTO";
+import { RegisterUserDTO } from "../../../dtos/auth/registerUserDTO";
 import { prisma, roleEnum } from "../../../database/postgresql";
 import { BcryptUtil } from "../../../../utils/bcrypt";
-import { UserMapper } from "../../../mappers/UserMapper";
-import { LoginUserDTO } from "../../../dtos/loginUserDTO";
+import { LoginUserDTO } from "../../../dtos/auth/loginUserDTO";
+import { UserMapper } from "../../../mappers/userMapper";
 
 // Para poder tener una firma, que me diga que necesito este formato
 type HashFunction = (password: string) => string;
@@ -41,7 +41,6 @@ export class DatabaseAuthDataSource implements AuthDataSource{
             }
             const userRole = roleEnum[Object.keys(roleEnum)[roleIndex - 1] as keyof typeof roleEnum];
 
-            // TODO: ajustar el role
             const newUser = await prisma.user.create({
                 data: {
                     dni: dni,
@@ -54,7 +53,6 @@ export class DatabaseAuthDataSource implements AuthDataSource{
             });
 
             return UserMapper.userEntityFromObject(newUser);
-
 
         } catch (error: any) {
             throw new Error(`Failed to register: ${error.message}`);

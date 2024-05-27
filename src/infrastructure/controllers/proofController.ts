@@ -17,7 +17,6 @@ export class ProofController{
 
     getUsers = async (req: Request, res: Response) => {
         
-        //TODO: Por mientras
         try {
             await new DatabaseProof().getUsers()
             .then(users => res.send(

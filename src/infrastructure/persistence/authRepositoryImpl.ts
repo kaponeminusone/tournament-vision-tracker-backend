@@ -1,8 +1,8 @@
 import { UserEntity } from "../../domain/entities/userEntity";
 import { AuthRepository } from "../../domain/repositories/authRepository";
 import { AuthDataSource } from "../datasources/authDataSource";
-import { LoginUserDTO } from "../dtos/loginUserDTO";
-import { RegisterUserDTO } from "../dtos/registerUserDTO";
+import { LoginUserDTO } from "../dtos/auth/loginUserDTO";
+import { RegisterUserDTO } from "../dtos/auth/registerUserDTO";
 
 
 // Asegura poder cambiar la pieza dataSource dependiendo de la base de datos
@@ -22,7 +22,6 @@ export class AuthRepositoryImpl implements AuthRepository{
         } catch (error: any) {
             throw new Error(error);
         }
-        
     }
 
     async login(loginUserDTO: LoginUserDTO): Promise<UserEntity> {

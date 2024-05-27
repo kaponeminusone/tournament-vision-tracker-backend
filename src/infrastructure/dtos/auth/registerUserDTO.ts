@@ -1,10 +1,9 @@
-import { Validators } from "../../utils/Validators";
+import { Validators } from "../../../utils/Validators";
 
 
 export class RegisterUserDTO{
     
-    //TODO: Para el registro se requiere identificar el rol del usuario
-    
+
     private constructor(
         public name: string,
         public dni: string,

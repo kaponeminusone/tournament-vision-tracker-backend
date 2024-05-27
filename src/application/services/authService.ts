@@ -1,9 +1,10 @@
 
 import { AuthRepository } from "../../domain/repositories/authRepository";
-import { LoginUser } from "../../domain/usecases/loginUserUseCase";
-import { RegisterUser } from "../../domain/usecases/registerUserUseCase";
-import { LoginUserDTO } from "../../infrastructure/dtos/loginUserDTO";
-import { RegisterUserDTO } from "../../infrastructure/dtos/registerUserDTO";
+import { LoginUser } from "../../domain/usecases/auth/loginUserUseCase";
+import { RegisterUser } from "../../domain/usecases/auth/registerUserUseCase";
+import { LoginUserDTO } from "../../infrastructure/dtos/auth/loginUserDTO";
+import { RegisterUserDTO } from "../../infrastructure/dtos/auth/registerUserDTO";
+
 export class AuthService {
     constructor(private readonly authRepository: AuthRepository) {}
 

@@ -1,6 +1,6 @@
 import { UserEntity } from "../../domain/entities/userEntity";
-import { LoginUserDTO } from "../dtos/loginUserDTO";
-import { RegisterUserDTO } from "../dtos/registerUserDTO";
+import { LoginUserDTO } from "../dtos/auth/loginUserDTO";
+import { RegisterUserDTO } from "../dtos/auth/registerUserDTO";
 
 
 export abstract class AuthDataSource{
